@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+  color: #333;
+}
+
+.App {
+  /* border: 3px solid #2d2d2d; */
+  height: 724px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid {
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.node {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  outline: 2px solid rgba(0, 7, 12, 0.75);
+}
+
+.node-start {
+  background-color: teal;
+}
+
+.node-end {
+  background-color: tomato;
+}
+
+.node-visited {
+  background-color: rgb(95, 160, 106);
+}
+
+.node-shortest-path {
+  background-color: cyan;
+}

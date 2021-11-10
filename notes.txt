@@ -1,0 +1,39 @@
+Tools and setup notes because this is a hecking hassle.
+
+
+1] npm init -y
+2] install -D prettier and create a file .prettier rc with "{}"  /*{} means default*/
+3] delete "tests" script in the package.json /*scripts is basically a repo of shell command*/
+4] add "format": "prettier --write "\src/**/*.{js.jsx}\"" in package.json "scripts"  /*This tells prettier to write out and modify your code*/
+5] npm install -D eslint eslint-config-prettier  /*-D is a shortcut to --save-dev*/
+6] add the .eslintrc.json
+7] add on the package.json script line "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
+8] initialize local repor "git init"
+9] create .gitignore and configure init
+10] npm install -D parcel
+11] add "dev": "parcel src/index.html", in the package.json scripts. /*this will point the entry point for parcel*/
+12] npm install react react-dom
+13] package.json add a propert "browserslist"
+14] npm install -D eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react
+15] add in the eslintrc "extend" property 
+    
+    "plugin:import/errors",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+
+16] add "rules" propert in eslintrc
+
+    "rules": {
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0
+    },
+
+17] add "settings" property in eslintrc
+
+"settings":{
+    "react": "detect" }
+
+
+18] npm install -D eslint-plugin-react-hooks
+
+19] add in extends eslintrc
