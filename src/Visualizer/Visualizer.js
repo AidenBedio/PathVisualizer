@@ -3,9 +3,10 @@ import Node from "./Node";
 import { run, getShortestPath } from "./Dijkstra";
 
 const Visualizer = () => {
-  const gridRow = useState("30");
-  const gridCol = useState("50");
+  const [gridRow, setGridRow] = useState(30);
+  const [gridCol, setGridCol] = useState(50);
   const grid = [];
+  let isMousePressed = false;
 
   const startNode = [5, 41];
   const endNode = [4, 5];
@@ -23,19 +24,20 @@ const Visualizer = () => {
   }
 
   function initializeGrid() {
-    const gRow = parseInt(gridRow);
-    const gCol = parseInt(gridCol);
+    // const gRow = parseInt(gridRow);
+    // const gCol = parseInt(gridCol);
 
-    for (let row = 0; row < gRow; row++) {
+    for (let row = 0; row < gridRow; row++) {
       let rowSet = [];
 
-      for (let col = 0; col < gCol; col++) {
+      for (let col = 0; col < gridCol; col++) {
         let current = {
           row,
           col,
           weight: Infinity,
           isVisited: false,
           prevNode: null,
+          isWall: false,
         };
         rowSet.push(current);
       }
@@ -55,7 +57,7 @@ const Visualizer = () => {
 
     // console.log(visitedOrder);
 
-    for (let i = 0; i < visitedOrder.length; i++) {
+    for (let i = 1; i < visitedOrder.length - 1; i++) {
       setTimeout(() => {
         const node = visitedOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
@@ -63,13 +65,42 @@ const Visualizer = () => {
       }, 25 * i);
     }
 
-    for (let j = 0; j < shortestPath.length; j++) {
-      setTimeout(() => {
-        const node = shortestPath[j];
-        document.getElementById(`node-${node.row}-${node.col}`).className =
-          "node node-shortest-path";
-      }, 25 * (j + visitedOrder.length));
+    if (shortestPath.length > 1) {
+      for (let j = 0; j < shortestPath.length; j++) {
+        setTimeout(() => {
+          const node = shortestPath[j];
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-shortest-path";
+        }, 25 * (j + visitedOrder.length));
+      }
     }
+  }
+
+  function handleMouseDown(row, col) {
+    const selectedNode = grid[row][col];
+
+    if (!selectedNode.isWall) {
+      selectedNode.isWall = true;
+      grid[row][col] = selectedNode;
+      document.getElementById(`node-${row}-${col}`).className =
+        "node node-wall";
+      isMousePressed = true;
+    } else {
+      selectedNode.isWall = false;
+      grid[row][col] = selectedNode;
+      document.getElementById(`node-${row}-${col}`).className = "node ";
+      isMousePressed = true;
+    }
+  }
+
+  function handleMouseEnter(row, col) {
+    // console.log("adadad");
+    if (!isMousePressed) return;
+    handleMouseDown(row, col);
+  }
+
+  function handleMouseUp() {
+    isMousePressed = false;
   }
 
   return (
@@ -86,6 +117,10 @@ const Visualizer = () => {
                       key={colId}
                       row={rowId}
                       col={colId}
+                      isWall={node.isWall}
+                      onMouseDown={() => handleMouseDown(rowId, colId)}
+                      onMouseEnter={() => handleMouseEnter(rowId, colId)}
+                      onMouseUp={() => handleMouseUp(rowId, colId)}
                     ></Node>
                   );
                 } else if (rowId === endNode[0] && colId === endNode[1]) {
@@ -95,10 +130,24 @@ const Visualizer = () => {
                       key={colId}
                       row={rowId}
                       col={colId}
+                      isWall={node.isWall}
+                      onMouseDown={() => handleMouseDown(rowId, colId)}
+                      onMouseEnter={() => handleMouseEnter(rowId, colId)}
+                      onMouseUp={() => handleMouseUp(rowId, colId)}
                     ></Node>
                   );
                 } else {
-                  return <Node key={colId} row={rowId} col={colId}></Node>;
+                  return (
+                    <Node
+                      key={colId}
+                      row={rowId}
+                      col={colId}
+                      isWall={node.isWall}
+                      onMouseDown={() => handleMouseDown(rowId, colId)}
+                      onMouseEnter={() => handleMouseEnter(rowId, colId)}
+                      onMouseUp={() => handleMouseUp(rowId, colId)}
+                    ></Node>
+                  );
                 }
               })}
             </div>

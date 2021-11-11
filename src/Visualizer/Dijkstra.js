@@ -9,7 +9,7 @@ export function run(grid, src, end) {
     });
   });
 
-  vertexSet.push(src);
+  // vertexSet.push(src);
   // setting of source node distance to 0;
   src.weight = 0;
 
@@ -21,7 +21,14 @@ export function run(grid, src, end) {
 
     const currentNode = vertexSet.shift();
 
-    if (currentNode.distance === Infinity) return shortSet;
+    // console.log(
+    //   currentNode.row + " " + currentNode.col + " " + currentNode.isWall
+    // );
+    if (currentNode.isWall) continue;
+
+    // console.log(currentNode.weight);
+
+    if (currentNode.weight == Infinity) return shortSet;
 
     currentNode.isVisited = true;
     shortSet.push(currentNode);
@@ -31,7 +38,7 @@ export function run(grid, src, end) {
       return shortSet;
     }
 
-    updateNeighbors(grid, currentNode, vertexSet);
+    updateNeighbors(grid, currentNode);
   }
 }
 
@@ -83,7 +90,7 @@ export function getShortestPath(endNode) {
   let currentNode = endNode;
 
   while (currentNode != null) {
-    console.log(currentNode.row + " " + currentNode.col);
+    // console.log(currentNode.row + " " + currentNode.col);
     nodesShortPath.unshift(currentNode);
     currentNode = currentNode.prevNode;
   }

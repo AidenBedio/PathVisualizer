@@ -41,3 +41,7 @@
 .node-shortest-path {
   background-color: cyan;
 }
+
+.node-wall {
+  background-color: darkgray;
+}
