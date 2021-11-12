@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Node from "./Node";
-import { run, getShortestPath } from "./Dijkstra";
+import { runDijkstraAlgo, getDijkstraShortestPath } from "./Dijkstra";
+import { runBFSAlgo, getBFSShortestPath } from "./BreadthFirst";
+import { runDFSAlgo, getDFSShortestPath } from "./DepthFirst";
 
 const Visualizer = () => {
   const [gridRow, setGridRow] = useState(30);
@@ -8,8 +10,8 @@ const Visualizer = () => {
   const grid = [];
   let isMousePressed = false;
 
-  const startNode = [5, 41];
-  const endNode = [4, 5];
+  const startNode = [10, 15];
+  const endNode = [20, 5];
 
   initializeGrid();
 
@@ -17,8 +19,32 @@ const Visualizer = () => {
     const src = grid[startNode[0]][startNode[1]];
     const end = grid[endNode[0]][endNode[1]];
 
-    const visitedOrder = run(grid, src, end);
-    const shortestPath = getShortestPath(end);
+    const visitedOrder = runDijkstraAlgo(grid, src, end);
+    const shortestPath = getDijkstraShortestPath(end);
+
+    return { visitedOrder, shortestPath };
+  }
+
+  function runBFS() {
+    const src = grid[startNode[0]][startNode[1]];
+    const end = grid[endNode[0]][endNode[1]];
+
+    const visitedOrder = runBFSAlgo(grid, src, end);
+    const shortestPath = getBFSShortestPath(end);
+
+    console.log(visitedOrder);
+
+    return { visitedOrder, shortestPath };
+  }
+
+  function runDFS() {
+    const src = grid[startNode[0]][startNode[1]];
+    const end = grid[endNode[0]][endNode[1]];
+
+    const visitedOrder = runDFSAlgo(grid, src, end);
+    const shortestPath = getDFSShortestPath(end);
+
+    console.log(visitedOrder);
 
     return { visitedOrder, shortestPath };
   }
@@ -53,9 +79,7 @@ const Visualizer = () => {
   }
 
   function animateDjikstra() {
-    const { visitedOrder, shortestPath } = runDijkstra();
-
-    // console.log(visitedOrder);
+    const { visitedOrder, shortestPath } = runDFS();
 
     for (let i = 1; i < visitedOrder.length - 1; i++) {
       setTimeout(() => {

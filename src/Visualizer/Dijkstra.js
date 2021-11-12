@@ -1,4 +1,4 @@
-export function run(grid, src, end) {
+export function runDijkstraAlgo(grid, src, end) {
   const vertexSet = [];
   const shortSet = [];
 
@@ -84,7 +84,7 @@ function sortNodesByWeight(vertexSet) {
   // console.log(vertexSet);
 }
 
-export function getShortestPath(endNode) {
+export function getDijkstraShortestPath(endNode) {
   const nodesShortPath = [];
 
   let currentNode = endNode;
