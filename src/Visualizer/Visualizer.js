@@ -3,6 +3,7 @@ import Node from "./Node";
 import { runDijkstraAlgo, getDijkstraShortestPath } from "./Dijkstra";
 import { runBFSAlgo, getBFSShortestPath } from "./BreadthFirst";
 import { runDFSAlgo, getDFSShortestPath } from "./DepthFirst";
+import { runAStarAlgo, getAStarShortestPath } from "./AStar";
 
 const Visualizer = () => {
   const [gridRow, setGridRow] = useState(30);
@@ -22,6 +23,8 @@ const Visualizer = () => {
     const visitedOrder = runDijkstraAlgo(grid, src, end);
     const shortestPath = getDijkstraShortestPath(end);
 
+    console.log(visitedOrder);
+
     return { visitedOrder, shortestPath };
   }
 
@@ -31,6 +34,18 @@ const Visualizer = () => {
 
     const visitedOrder = runBFSAlgo(grid, src, end);
     const shortestPath = getBFSShortestPath(end);
+
+    console.log(visitedOrder);
+
+    return { visitedOrder, shortestPath };
+  }
+
+  function runAStar() {
+    const src = grid[startNode[0]][startNode[1]];
+    const end = grid[endNode[0]][endNode[1]];
+
+    const visitedOrder = runAStarAlgo(grid, src, end);
+    const shortestPath = getAStarShortestPath(end);
 
     console.log(visitedOrder);
 
@@ -57,6 +72,9 @@ const Visualizer = () => {
       let rowSet = [];
 
       for (let col = 0; col < gridCol; col++) {
+        const hCost = 0;
+        const fCost = 0;
+
         let current = {
           row,
           col,
@@ -64,6 +82,11 @@ const Visualizer = () => {
           isVisited: false,
           prevNode: null,
           isWall: false,
+          hCost: hCost,
+          gCost: fCost,
+          fCost: function () {
+            return this.hCost + this.gCost;
+          },
         };
         rowSet.push(current);
       }
@@ -79,14 +102,14 @@ const Visualizer = () => {
   }
 
   function animateDjikstra() {
-    const { visitedOrder, shortestPath } = runDFS();
+    const { visitedOrder, shortestPath } = runDijkstra();
 
     for (let i = 1; i < visitedOrder.length - 1; i++) {
       setTimeout(() => {
         const node = visitedOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 25 * i);
+      }, 10 * i);
     }
 
     if (shortestPath.length > 1) {
@@ -95,7 +118,7 @@ const Visualizer = () => {
           const node = shortestPath[j];
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node node-shortest-path";
-        }, 25 * (j + visitedOrder.length));
+        }, 10 * (j + visitedOrder.length));
       }
     }
   }

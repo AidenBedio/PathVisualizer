@@ -15,6 +15,8 @@ const Node = ({
     : isWall
     ? "node-wall"
     : "";
+  ("");
+
   return (
     <div
       className={`node ${blockType}`}
